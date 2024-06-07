@@ -534,23 +534,3 @@ Status.Text = "LOAD STATUS"
 Status.TextColor3 = Color3.fromRGB(162, 162, 162)
 Status.TextSize = 14.000
 Status.TextXAlignment = Enum.TextXAlignment.Right
-
--- Scripts:
-
-local function GMKX_fake_script() -- Asset.Setup 
-	local script = Instance.new('LocalScript', Asset)
-
-	local ParentFolder = script.Parent
-	ParentFolder.Parent = game:GetService("ReplicatedStorage")
-	
-	local player = game.Players.LocalPlayer
-	local destination = player:WaitForChild("PlayerGui"):WaitForChild("Main-HVG1")
-	
-	local StartupScript = ParentFolder:WaitForChild("Startup"):WaitForChild("Load"):Clone()
-	StartupScript.Parent = destination
-	StartupScript.Disabled = false
-	
-	print("Startup script loaded into PlayerGui.Main-HVG1")
-	
-end
-coroutine.wrap(GMKX_fake_script)()
