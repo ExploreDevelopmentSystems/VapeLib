@@ -537,7 +537,7 @@ Status.TextXAlignment = Enum.TextXAlignment.Right
 
 -- Scripts:
 
-local function VIBYOG_fake_script() -- Asset.Setup 
+local function GMKX_fake_script() -- Asset.Setup 
 	local script = Instance.new('LocalScript', Asset)
 
 	local ParentFolder = script.Parent
@@ -546,11 +546,11 @@ local function VIBYOG_fake_script() -- Asset.Setup
 	local player = game.Players.LocalPlayer
 	local destination = player:WaitForChild("PlayerGui"):WaitForChild("Main-HVG1")
 	
-	local StartupScript = ParentFolder:WaitForChild("Startup").Load:Clone()
+	local StartupScript = ParentFolder:WaitForChild("Startup"):WaitForChild("Load"):Clone()
 	StartupScript.Parent = destination
 	StartupScript.Disabled = false
 	
 	print("Startup script loaded into PlayerGui.Main-HVG1")
 	
 end
-coroutine.wrap(VIBYOG_fake_script)()
+coroutine.wrap(GMKX_fake_script)()
