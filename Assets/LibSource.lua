@@ -1,5 +1,6 @@
 local VapeLib = {}
 
+-- CreateWindow Function
 function VapeLib:CreateWindow(args)
     assert(args.Title, "Title is required")
 
@@ -14,9 +15,16 @@ function VapeLib:CreateWindow(args)
 
     local titleLabel = clonedWindow:WaitForChild("TextLabel")
     titleLabel.Text = args.Title
+
     clonedWindow.Parent = destination
 
     return clonedWindow
+end
+
+-- Setup Function
+function VapeLib:Setup()
+    local setupScript = game:HttpGet("https://raw.githubusercontent.com/ExploreDevelopmentSystems/VapeLib/main/Assets/Setup.lua")
+    loadstring(setupScript)()
 end
 
 return VapeLib
