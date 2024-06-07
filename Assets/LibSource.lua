@@ -1,5 +1,23 @@
-local VapeLib = {}
+-- Load additional setup script
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ExploreDevelopmentSystems/VapeLib/main/Assets/Setup.lua"))()
+
+local VapeLib = {}
+
+-- Table to store random tab names
+VapeLib.TabNames = {}
+
+-- Utility function to generate a random 6-character string
+local function generateRandomString(length)
+    local chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    local randomString = ''
+    for i = 1, length do
+        local randomIndex = math.random(1, #chars)
+        randomString = randomString .. chars:sub(randomIndex, randomIndex)
+    end
+    return randomString
+end
+
+-- CreateWindow Function
 function VapeLib:CreateWindow(args)
     assert(args.Title, "Title is required")
 
@@ -25,9 +43,9 @@ function VapeLib:CreateWindow(args)
         titleLabel.Text = args.Title
     end
 
+    clonedWindow.Name = args.Title
     clonedWindow.Parent = libContainer
 
-    -- Add Tabs container if not present
     if not clonedWindow:FindFirstChild("Tabs") then
         local Tabs = Instance.new("Folder")
         Tabs.Name = "Tabs"
@@ -45,13 +63,16 @@ function VapeLib:CreateTab(window, args)
 
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-    -- Ensure unique identifiers for tabs
     local tabName = args.Name
-    if window:FindFirstChild(tabName) then
-        error("A tab with this name already exists in the window.")
+    local uniqueIdentifier = generateRandomString(6) -- Generate a random 6-character string
+
+    if window:FindFirstChild(uniqueIdentifier) then
+        error("A tab with this identifier already exists in the window.")
     end
 
-    -- Clone and setup TabButton
+    -- Store the random identifier for future use
+    VapeLib.TabNames[args.Name] = uniqueIdentifier
+
     local tabButtonTemplate = ReplicatedStorage:WaitForChild("Asset"):WaitForChild("Window"):WaitForChild("TabButton")
     local clonedTabButton = tabButtonTemplate:Clone()
 
@@ -65,10 +86,9 @@ function VapeLib:CreateTab(window, args)
         imageLabel.Image = "rbxassetid://" .. tostring(args.Image)
     end
 
-    clonedTabButton.Name = tabName
+    clonedTabButton.Name = uniqueIdentifier
     clonedTabButton.Parent = window:FindFirstChild("Tabs")
 
-    -- Clone and setup corresponding window frame
     local windowFrameTemplate = ReplicatedStorage:WaitForChild("Asset"):WaitForChild("Window"):WaitForChild("Window")
     local clonedWindowFrame = windowFrameTemplate:Clone()
 
@@ -77,7 +97,7 @@ function VapeLib:CreateTab(window, args)
         windowNameLabel.Text = args.Name
     end
 
-    clonedWindowFrame.Name = tabName
+    clonedWindowFrame.Name = uniqueIdentifier
     clonedWindowFrame.Parent = window
 
     return clonedTabButton, clonedWindowFrame
