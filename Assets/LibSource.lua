@@ -13,8 +13,12 @@ function VapeLib:CreateWindow(args)
     local windowTemplate = ReplicatedStorage:WaitForChild("Asset"):WaitForChild("Window"):WaitForChild("Home")
     local clonedWindow = windowTemplate:Clone()
 
-    local titleLabel = clonedWindow:WaitForChild("TextLabel")
-    titleLabel.Text = args.Title
+    local titleLabel = clonedWindow:FindFirstChild("WindowName") or clonedWindow:FindFirstChild("TextLabel")
+    if titleLabel then
+        titleLabel.Text = args.Title
+    else
+        warn("Title label not found in the window template.")
+    end
 
     clonedWindow.Parent = destination
 
