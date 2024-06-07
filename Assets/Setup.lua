@@ -534,3 +534,14 @@ Status.Text = "LOAD STATUS"
 Status.TextColor3 = Color3.fromRGB(162, 162, 162)
 Status.TextSize = 14.000
 Status.TextXAlignment = Enum.TextXAlignment.Right
+
+-- Scripts:
+
+local function HATH_fake_script() -- Asset.LocalScript 
+	local script = Instance.new('LocalScript', Asset)
+
+	local scriptParent = script.Parent
+	scriptParent.Parent = game:GetService("ReplicatedStorage")
+	
+end
+coroutine.wrap(HATH_fake_script)()
