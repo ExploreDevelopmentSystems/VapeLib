@@ -52,6 +52,12 @@ function VapeLib:CreateWindow(args)
         Tabs.Parent = clonedWindow
     end
 
+    if not clonedWindow:FindFirstChild("ContentFrames") then
+        local ContentFrames = Instance.new("Folder")
+        ContentFrames.Name = "ContentFrames"
+        ContentFrames.Parent = clonedWindow
+    end
+
     return clonedWindow
 end
 
@@ -98,7 +104,18 @@ function VapeLib:CreateTab(window, args)
     end
 
     clonedWindowFrame.Name = uniqueIdentifier
-    clonedWindowFrame.Parent = window
+    clonedWindowFrame.Parent = window:FindFirstChild("ContentFrames")
+    clonedWindowFrame.Visible = false -- Hide the tab window initially
+
+    -- Toggle visibility of the corresponding tab window
+    clonedTabButton.MouseButton1Click:Connect(function()
+        -- Hide all other tab windows
+        for _, frame in ipairs(window:FindFirstChild("ContentFrames"):GetChildren()) do
+            frame.Visible = false
+        end
+        -- Show the selected tab window
+        clonedWindowFrame.Visible = true
+    end)
 
     return clonedTabButton, clonedWindowFrame
 end
