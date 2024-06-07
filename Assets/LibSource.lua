@@ -84,15 +84,22 @@ function VapeLib:CreateTab(window, args)
     local textLabel = clonedTabButton:FindFirstChild("TextLabel")
     if textLabel then
         textLabel.Text = args.Name
+        print("Set TextLabel.Text to:", args.Name)
+    else
+        warn("TextLabel not found in TabButton.")
     end
 
     local imageLabel = clonedTabButton:FindFirstChild("ImageLabel")
     if imageLabel then
         imageLabel.Image = "rbxassetid://" .. tostring(args.Image)
+        print("Set ImageLabel.Image to:", "rbxassetid://" .. tostring(args.Image))
+    else
+        warn("ImageLabel not found in TabButton.")
     end
 
     clonedTabButton.Name = uniqueIdentifier
     clonedTabButton.Parent = window:FindFirstChild("Tabs")
+    print("Added TabButton with Name:", uniqueIdentifier)
 
     -- Clone and setup corresponding window frame
     local windowFrameTemplate = ReplicatedStorage:WaitForChild("Asset"):WaitForChild("Window"):WaitForChild("Window")
@@ -101,18 +108,24 @@ function VapeLib:CreateTab(window, args)
     local windowNameLabel = clonedWindowFrame:FindFirstChild("WindowName") or clonedWindowFrame:FindFirstChild("TextLabel")
     if windowNameLabel then
         windowNameLabel.Text = args.Name
+        print("Set WindowName.Text to:", args.Name)
+    else
+        warn("WindowName label not found in Window frame.")
     end
 
     clonedWindowFrame.Name = uniqueIdentifier
     clonedWindowFrame.Parent = window:FindFirstChild("ContentFrames")
     clonedWindowFrame.Visible = false -- Hide the tab window initially
+    print("Added WindowFrame with Name:", uniqueIdentifier)
 
     -- Store the tab and corresponding window in the tracking system
     VapeLib.Tabs[uniqueIdentifier] = { Button = clonedTabButton, Window = clonedWindowFrame }
+    print("Stored tab and window with unique identifier:", uniqueIdentifier)
 
     -- Toggle visibility of the corresponding tab window
     clonedTabButton.MouseButton1Click:Connect(function()
         clonedWindowFrame.Visible = not clonedWindowFrame.Visible
+        print("Toggled visibility for:", uniqueIdentifier, "to:", clonedWindowFrame.Visible)
     end)
 
     return clonedTabButton, clonedWindowFrame
