@@ -1,5 +1,5 @@
 local VapeLib = {}
-
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ExploreDevelopmentSystems/VapeLib/main/Assets/Setup.lua"))()
 -- CreateWindow Function
 function VapeLib:CreateWindow(args)
     assert(args.Title, "Title is required")
