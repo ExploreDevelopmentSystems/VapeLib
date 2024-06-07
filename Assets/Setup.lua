@@ -1,9 +1,3 @@
-local MainHVG1 = Instance.new("ScreenGui")
-
-MainHVG1.Name = "Main-HVG1"
-MainHVG1.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-MainHVG1.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-
 -- Gui to Lua
 -- Version: 3.2
 
@@ -543,32 +537,7 @@ Status.TextXAlignment = Enum.TextXAlignment.Right
 
 -- Scripts:
 
-local function RXCN_fake_script()
-	local script = Instance.new('LocalScript', Toggle)
-
-	local button = script.Parent
-	local frame = button:WaitForChild("Frame")
-	local TweenService = game:GetService("TweenService")
-	
-	local toggle = false
-	
-	local falsePos = UDim2.new(0.467, 0, 0, 0)
-	local truePos = UDim2.new(0, 0, 0, 0)
-	
-	local tweenInfo = TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-	
-	local function toggleFrame()
-		toggle = not toggle
-		local targetPos = toggle and truePos or falsePos
-		local tween = TweenService:Create(frame, tweenInfo, {Position = targetPos})
-		tween:Play()
-	end
-	
-	button.MouseButton1Click:Connect(toggleFrame)
-	
-end
-coroutine.wrap(RXCN_fake_script)()
-local function RKDOEU_fake_script()
+local function VIBYOG_fake_script() -- Asset.Setup 
 	local script = Instance.new('LocalScript', Asset)
 
 	local ParentFolder = script.Parent
@@ -584,4 +553,4 @@ local function RKDOEU_fake_script()
 	print("Startup script loaded into PlayerGui.Main-HVG1")
 	
 end
-coroutine.wrap(RKDOEU_fake_script)()
+coroutine.wrap(VIBYOG_fake_script)()
