@@ -3,8 +3,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ExploreDevelopmentSys
 
 local VapeLib = {}
 
--- Table to store random tab names
-VapeLib.TabNames = {}
+-- Table to store random tab names and their corresponding windows
+VapeLib.Tabs = {}
 
 -- Utility function to generate a random 6-character string
 local function generateRandomString(length)
@@ -69,15 +69,15 @@ function VapeLib:CreateTab(window, args)
 
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-    local uniqueIdentifier = generateRandomString(6) -- Generate a random 6-character string
+    -- Generate a unique identifier
+    local uniqueIdentifier = generateRandomString(6)
 
+    -- Ensure unique identifier does not conflict
     if window:FindFirstChild(uniqueIdentifier) then
         error("A tab with this identifier already exists in the window.")
     end
 
-    -- Store the random identifier for future use
-    VapeLib.TabNames[args.Name] = uniqueIdentifier
-
+    -- Clone and setup TabButton
     local tabButtonTemplate = ReplicatedStorage:WaitForChild("Asset"):WaitForChild("Window"):WaitForChild("TabButton")
     local clonedTabButton = tabButtonTemplate:Clone()
 
@@ -94,6 +94,7 @@ function VapeLib:CreateTab(window, args)
     clonedTabButton.Name = uniqueIdentifier
     clonedTabButton.Parent = window:FindFirstChild("Tabs")
 
+    -- Clone and setup corresponding window frame
     local windowFrameTemplate = ReplicatedStorage:WaitForChild("Asset"):WaitForChild("Window"):WaitForChild("Window")
     local clonedWindowFrame = windowFrameTemplate:Clone()
 
@@ -105,6 +106,9 @@ function VapeLib:CreateTab(window, args)
     clonedWindowFrame.Name = uniqueIdentifier
     clonedWindowFrame.Parent = window:FindFirstChild("ContentFrames")
     clonedWindowFrame.Visible = false -- Hide the tab window initially
+
+    -- Store the tab and corresponding window in the tracking system
+    VapeLib.Tabs[uniqueIdentifier] = { Button = clonedTabButton, Window = clonedWindowFrame }
 
     -- Toggle visibility of the corresponding tab window
     clonedTabButton.MouseButton1Click:Connect(function()
