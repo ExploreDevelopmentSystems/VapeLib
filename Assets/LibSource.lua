@@ -69,7 +69,6 @@ function VapeLib:CreateTab(window, args)
 
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-    local tabName = args.Name
     local uniqueIdentifier = generateRandomString(6) -- Generate a random 6-character string
 
     if window:FindFirstChild(uniqueIdentifier) then
@@ -109,12 +108,7 @@ function VapeLib:CreateTab(window, args)
 
     -- Toggle visibility of the corresponding tab window
     clonedTabButton.MouseButton1Click:Connect(function()
-        -- Hide all other tab windows
-        for _, frame in ipairs(window:FindFirstChild("ContentFrames"):GetChildren()) do
-            frame.Visible = false
-        end
-        -- Show the selected tab window
-        clonedWindowFrame.Visible = true
+        clonedWindowFrame.Visible = not clonedWindowFrame.Visible
     end)
 
     return clonedTabButton, clonedWindowFrame
