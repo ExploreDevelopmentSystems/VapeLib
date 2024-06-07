@@ -49,4 +49,6 @@ function VapeLib:CreateWindow(args)
     return clonedWindow
 end
 
+print("VapeLib module loaded")
+
 return VapeLib
