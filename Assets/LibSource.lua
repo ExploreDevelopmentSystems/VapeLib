@@ -211,12 +211,14 @@ function VapeLib:CreateModule(tab, moduleArgs)
 end
 
 -- CreateToggle Function
+-- CreateToggle Function with Tweening
 function VapeLib:CreateToggle(configFrame, toggleArgs)
     assert(configFrame, "Config frame is required")
     assert(toggleArgs.Name, "Name is required")
     assert(toggleArgs.Callback, "Callback is required")
 
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local TweenService = game:GetService("TweenService")
 
     -- Find the Toggle template
     local assetFolder = findChildOrError(ReplicatedStorage, "Asset", "ReplicatedStorage")
@@ -237,15 +239,24 @@ function VapeLib:CreateToggle(configFrame, toggleArgs)
 
     -- Define initial toggle state
     local toggleState = false
-    local frame = clonedToggle:FindFirstChild("Frame")
+    local mainFrame = clonedToggle:FindFirstChild("Main")
+    local onFrame = clonedToggle:FindFirstChild("On")
+    local offFrame = clonedToggle:FindFirstChild("Off")
+
+    if not mainFrame or not onFrame or not offFrame then
+        error("Main, On, or Off frame not found in Toggle template.")
+    end
 
     -- Function to update the UI based on the toggle state
     local function updateToggleUI()
+        local goalPosition
         if toggleState then
-            frame.Size = UDim2.new(0.467, 0, 1, 0)
+            goalPosition = UDim2.new(onFrame.Position.X.Scale, onFrame.Position.X.Offset, onFrame.Position.Y.Scale, onFrame.Position.Y.Offset)
         else
-            frame.Size = UDim2.new(0, 0, 1, 0)
+            goalPosition = UDim2.new(offFrame.Position.X.Scale, offFrame.Position.X.Offset, offFrame.Position.Y.Scale, offFrame.Position.Y.Offset)
         end
+        local tween = TweenService:Create(mainFrame, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Position = goalPosition })
+        tween:Play()
         toggleArgs.Callback(toggleState)
     end
 
@@ -262,6 +273,7 @@ function VapeLib:CreateToggle(configFrame, toggleArgs)
 
     return clonedToggle
 end
+
 
 
 
