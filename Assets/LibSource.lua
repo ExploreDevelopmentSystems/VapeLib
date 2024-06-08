@@ -152,7 +152,6 @@ function VapeLib:CreateModule(tab, moduleArgs)
     clonedModule.Name = moduleArgs.Name
     print("Cloned module with name:", clonedModule.Name)
 
-    -- Set the module name
     local textLabel = clonedModule:FindFirstChild("TextLabel")
     if textLabel then
         textLabel.Text = moduleArgs.Name
@@ -160,25 +159,28 @@ function VapeLib:CreateModule(tab, moduleArgs)
         warn("TextLabel not found in Module.")
     end
 
-    -- Find the content frame corresponding to the tab
+    -- Find the correct content frame for the tab
     local tabName = tab.Name
     print("Tab name:", tabName)
-    local contentFrame = tab.Parent:FindFirstChild(tabName)
+
+    -- Assume `tab` points to the button and find its parent window
+    local parentWindow = tab.Parent.Parent -- `tab.Parent` is "Tabs", so `tab.Parent.Parent` should be the window
+    local contentFrames = parentWindow:FindFirstChild("ContentFrames")
+    if not contentFrames then
+        error("ContentFrames folder not found in the parent window.")
+    end
+
+    local contentFrame = contentFrames:FindFirstChild(tabName)
     print("Content frame found:", contentFrame)
     if not contentFrame then
         error("Content frame for tab '" .. tabName .. "' not found.")
     end
 
-    -- Find or create the List frame inside the content frame
+    -- Find the List frame inside the content frame
     local tabList = contentFrame:FindFirstChild("List")
     print("List frame found:", tabList)
     if not tabList then
-        tabList = Instance.new("Frame")
-        tabList.Name = "List"
-        tabList.Size = UDim2.new(1, 0, 1, 0)
-        tabList.BackgroundTransparency = 1
-        tabList.Parent = contentFrame
-        print("Created List frame.")
+        error("List frame not found in the tab's content frame.")
     end
 
     -- Parent the cloned module to the tab list
@@ -207,6 +209,7 @@ function VapeLib:CreateModule(tab, moduleArgs)
 
     return clonedModule, clonedModuleFrame
 end
+
 
 
 return VapeLib
