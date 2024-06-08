@@ -147,7 +147,7 @@ function VapeLib:CreateTab(window, args)
         print("Toggled visibility for:", uniqueIdentifier, "to:", clonedWindowFrame.Visible)
     end)
 
-    -- Define the CreateModule function for the tab
+    -- Add CreateModule function to the tab
     function VapeLib:CreateModule(tab, moduleArgs)
         assert(tab, "Tab is required")
         assert(moduleArgs.Name, "Name is required")
@@ -156,9 +156,10 @@ function VapeLib:CreateTab(window, args)
         -- Generate a unique identifier for the module
         local moduleIdentifier = generateRandomString(6)
 
-        -- Find the Module1 template
+        -- Find the Module template
         local moduleFolder = findChildOrError(assetFolder, "Module", "ReplicatedStorage.Asset")
-        local moduleTemplate = findChildOrError(moduleFolder, "Module1", "ReplicatedStorage.Asset.Module")
+        local moduleTemplate = findChildOrError(moduleFolder, "Module", "ReplicatedStorage.Asset.Module")
+        local moduleFrameTemplate = findChildOrError(moduleFolder, "ModuleFrame", "ReplicatedStorage.Asset.Module")
 
         -- Clone and setup Module
         local clonedModule = moduleTemplate:Clone()
@@ -182,7 +183,6 @@ function VapeLib:CreateTab(window, args)
         clonedModule.Parent = list
 
         -- Clone and setup corresponding ModuleFrame
-        local moduleFrameTemplate = findChildOrError(moduleFolder, "Module1", "ReplicatedStorage.Asset.Module")
         local clonedModuleFrame = moduleFrameTemplate:Clone()
         clonedModuleFrame.Name = moduleIdentifier
         clonedModuleFrame.Parent = tab:FindFirstChild("Window")
