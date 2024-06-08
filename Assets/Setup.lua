@@ -44,14 +44,14 @@ local Frame = Instance.new("Frame")
 local UICorner_6 = Instance.new("UICorner")
 local TextLabel_7 = Instance.new("TextLabel")
 local Module = Instance.new("Folder")
-local Module1 = Instance.new("TextButton")
+local Module_2 = Instance.new("TextButton")
 local TextLabel_8 = Instance.new("TextLabel")
-local ImageLabel_3 = Instance.new("ImageLabel")
-local Module1_2 = Instance.new("Frame")
+local TextButton_2 = Instance.new("TextButton")
+local ModuleFrame = Instance.new("Frame")
 local Config = Instance.new("Frame")
 local UIListLayout_2 = Instance.new("UIListLayout")
 local Data = Instance.new("Folder")
-local Module_2 = Instance.new("Folder")
+local Module_3 = Instance.new("Folder")
 local Window_3 = Instance.new("Folder")
 local Element_2 = Instance.new("Folder")
 local Startup = Instance.new("Folder")
@@ -396,19 +396,19 @@ TextLabel_7.TextXAlignment = Enum.TextXAlignment.Right
 Module.Name = "Module"
 Module.Parent = Asset
 
-Module1.Name = "Module1"
-Module1.Parent = Module
-Module1.BackgroundColor3 = Color3.fromRGB(26, 25, 26)
-Module1.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Module1.BorderSizePixel = 0
-Module1.Position = UDim2.new(0.604494631, 0, 0.547281325, 0)
-Module1.Size = UDim2.new(0, 200, 0, 45)
-Module1.Font = Enum.Font.SourceSans
-Module1.Text = " "
-Module1.TextColor3 = Color3.fromRGB(0, 0, 0)
-Module1.TextSize = 14.000
+Module_2.Name = "Module"
+Module_2.Parent = Module
+Module_2.BackgroundColor3 = Color3.fromRGB(26, 25, 26)
+Module_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Module_2.BorderSizePixel = 0
+Module_2.Position = UDim2.new(0.604494631, 0, 0.547281325, 0)
+Module_2.Size = UDim2.new(0, 200, 0, 45)
+Module_2.Font = Enum.Font.SourceSans
+Module_2.Text = " "
+Module_2.TextColor3 = Color3.fromRGB(0, 0, 0)
+Module_2.TextSize = 14.000
 
-TextLabel_8.Parent = Module1
+TextLabel_8.Parent = Module_2
 TextLabel_8.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 TextLabel_8.BackgroundTransparency = 1.000
 TextLabel_8.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -421,26 +421,29 @@ TextLabel_8.TextColor3 = Color3.fromRGB(162, 162, 162)
 TextLabel_8.TextSize = 14.000
 TextLabel_8.TextXAlignment = Enum.TextXAlignment.Left
 
-ImageLabel_3.Parent = Module1
-ImageLabel_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-ImageLabel_3.BackgroundTransparency = 2.000
-ImageLabel_3.BorderColor3 = Color3.fromRGB(0, 0, 0)
-ImageLabel_3.BorderSizePixel = 0
-ImageLabel_3.Position = UDim2.new(0.884692669, 0, 0.244444445, 0)
-ImageLabel_3.Size = UDim2.new(0, 15, 0, 23)
-ImageLabel_3.Image = "http://www.roblox.com/asset/?id=17770076018"
-ImageLabel_3.ImageColor3 = Color3.fromRGB(162, 162, 162)
+TextButton_2.Parent = Module_2
+TextButton_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextButton_2.BackgroundTransparency = 2.000
+TextButton_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TextButton_2.BorderSizePixel = 0
+TextButton_2.Position = UDim2.new(0.832499981, 0, 0.211111113, 0)
+TextButton_2.Rotation = -90.000
+TextButton_2.Size = UDim2.new(0, 26, 0, 25)
+TextButton_2.Font = Enum.Font.SourceSans
+TextButton_2.Text = "..."
+TextButton_2.TextColor3 = Color3.fromRGB(162, 162, 162)
+TextButton_2.TextSize = 24.000
 
-Module1_2.Name = "Module1"
-Module1_2.Parent = Module
-Module1_2.BackgroundColor3 = Color3.fromRGB(26, 25, 26)
-Module1_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Module1_2.BorderSizePixel = 0
-Module1_2.Position = UDim2.new(0.604900479, 0, 0.612200081, 0)
-Module1_2.Size = UDim2.new(0, 200, 0, 130)
+ModuleFrame.Name = "ModuleFrame"
+ModuleFrame.Parent = Module
+ModuleFrame.BackgroundColor3 = Color3.fromRGB(26, 25, 26)
+ModuleFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+ModuleFrame.BorderSizePixel = 0
+ModuleFrame.Position = UDim2.new(0.604900479, 0, 0.612200081, 0)
+ModuleFrame.Size = UDim2.new(0, 200, 0, 130)
 
 Config.Name = "Config"
-Config.Parent = Module1_2
+Config.Parent = ModuleFrame
 Config.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Config.BackgroundTransparency = 2.000
 Config.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -454,8 +457,8 @@ UIListLayout_2.SortOrder = Enum.SortOrder.LayoutOrder
 Data.Name = "Data"
 Data.Parent = Asset
 
-Module_2.Name = "Module"
-Module_2.Parent = Data
+Module_3.Name = "Module"
+Module_3.Parent = Data
 
 Window_3.Name = "Window"
 Window_3.Parent = Data
@@ -537,11 +540,11 @@ Status.TextXAlignment = Enum.TextXAlignment.Right
 
 -- Scripts:
 
-local function HATH_fake_script() -- Asset.LocalScript 
+local function CWVLEYN_fake_script() -- Asset.LocalScript 
 	local script = Instance.new('LocalScript', Asset)
 
 	local scriptParent = script.Parent
 	scriptParent.Parent = game:GetService("ReplicatedStorage")
 	
 end
-coroutine.wrap(HATH_fake_script)()
+coroutine.wrap(CWVLEYN_fake_script)()
