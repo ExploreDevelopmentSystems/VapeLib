@@ -1,3 +1,23 @@
+-- Load additional setup script
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ExploreDevelopmentSystems/VapeLib/main/Assets/Setup.lua"))()
+
+local VapeLib = {}
+
+-- Table to store random tab names and their corresponding windows and modules
+VapeLib.Tabs = {}
+
+-- Utility function to generate a random 6-character string
+local function generateRandomString(length)
+    local chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    local randomString = ''
+    for i = 1, length do
+        local randomIndex = math.random(1, #chars)
+        randomString = randomString .. chars:sub(randomIndex, randomIndex)
+    end
+    return randomString
+end
+
+-- Function to find and return a child from a parent or error out if not found
 local function findChildOrError(parent, childName, context)
     local child = parent:FindFirstChild(childName)
     if not child then
@@ -6,6 +26,7 @@ local function findChildOrError(parent, childName, context)
     return child
 end
 
+-- CreateWindow Function
 function VapeLib:CreateWindow(args)
     assert(args.Title, "Title is required")
 
@@ -36,6 +57,8 @@ function VapeLib:CreateWindow(args)
     local titleLabel = clonedWindow:FindFirstChild("WindowName") or clonedWindow:FindFirstChild("TextLabel")
     if titleLabel then
         titleLabel.Text = args.Title
+    else
+        warn("Title label not found in cloned window.")
     end
 
     clonedWindow.Name = args.Title
@@ -56,6 +79,7 @@ function VapeLib:CreateWindow(args)
     return clonedWindow
 end
 
+-- CreateTab Function
 function VapeLib:CreateTab(window, args)
     assert(window, "Window is required")
     assert(args.Name, "Name is required")
@@ -119,57 +143,60 @@ function VapeLib:CreateTab(window, args)
         clonedWindowFrame.Visible = not clonedWindowFrame.Visible
     end)
 
-    function VapeLib:CreateModule(tab, moduleArgs)
-        assert(tab, "Tab is required")
-        assert(moduleArgs.Name, "Name is required")
-        assert(moduleArgs.Callback, "Callback is required")
+    return clonedTabButton, clonedWindowFrame
+end
 
-        local moduleIdentifier = generateRandomString(6)
+-- CreateModule Function
+function VapeLib:CreateModule(tab, moduleArgs)
+    assert(tab, "Tab is required")
+    assert(moduleArgs.Name, "Name is required")
+    assert(moduleArgs.Callback, "Callback is required")
 
-        local moduleFolder = findChildOrError(assetFolder, "Module", "ReplicatedStorage.Asset")
-        local moduleTemplate = findChildOrError(moduleFolder, "Module", "ReplicatedStorage.Asset.Module")
-        local moduleFrameTemplate = findChildOrError(moduleFolder, "ModuleFrame", "ReplicatedStorage.Asset.Module")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local moduleIdentifier = generateRandomString(6)
 
-        local clonedModule = moduleTemplate:Clone()
-        clonedModule.Name = moduleIdentifier
+    local assetFolder = findChildOrError(ReplicatedStorage, "Asset", "ReplicatedStorage")
+    local moduleFolder = findChildOrError(assetFolder, "Module", "ReplicatedStorage.Asset")
+    local moduleTemplate = findChildOrError(moduleFolder, "Module", "ReplicatedStorage.Asset.Module")
+    local moduleFrameTemplate = findChildOrError(moduleFolder, "ModuleFrame", "ReplicatedStorage.Asset.Module")
 
-        local textLabel = clonedModule:FindFirstChild("TextLabel")
-        if textLabel then
-            textLabel.Text = moduleArgs.Name
-        else
-            warn("TextLabel not found in Module.")
-        end
+    local clonedModule = moduleTemplate:Clone()
+    clonedModule.Name = moduleIdentifier
 
-        local contentFrame = VapeLib.Tabs[tab.Name].Window
-        local tabList = contentFrame:FindFirstChild("List")
-        if not tabList then
-            error("List frame not found in the tab's content frame.")
-        end
-
-        clonedModule.Parent = tabList
-
-        local clonedModuleFrame = moduleFrameTemplate:Clone()
-        clonedModuleFrame.Name = moduleIdentifier
-        clonedModuleFrame.Parent = tabList
-        clonedModuleFrame.Visible = false
-
-        table.insert(VapeLib.Tabs[tab.Name].Modules, { Module = clonedModule, Frame = clonedModuleFrame })
-
-        local moduleButton = clonedModule:FindFirstChild("TextButton")
-        if moduleButton then
-            moduleButton.MouseButton1Click:Connect(function()
-                local isActive = clonedModuleFrame.Visible
-                clonedModuleFrame.Visible = not isActive
-                moduleArgs.Callback(not isActive)
-            end)
-        else
-            warn("TextButton not found in Module.")
-        end
-
-        return clonedModule, clonedModuleFrame
+    local textLabel = clonedModule:FindFirstChild("TextLabel")
+    if textLabel then
+        textLabel.Text = moduleArgs.Name
+    else
+        warn("TextLabel not found in Module.")
     end
 
-    return clonedTabButton, clonedWindowFrame
+    local contentFrame = VapeLib.Tabs[tab.Name].Window
+    local tabList = contentFrame:FindFirstChild("List")
+    if not tabList then
+        error("List frame not found in the tab's content frame.")
+    end
+
+    clonedModule.Parent = tabList
+
+    local clonedModuleFrame = moduleFrameTemplate:Clone()
+    clonedModuleFrame.Name = moduleIdentifier
+    clonedModuleFrame.Parent = tabList
+    clonedModuleFrame.Visible = false
+
+    table.insert(VapeLib.Tabs[tab.Name].Modules, { Module = clonedModule, Frame = clonedModuleFrame })
+
+    local moduleButton = clonedModule:FindFirstChild("TextButton")
+    if moduleButton then
+        moduleButton.MouseButton1Click:Connect(function()
+            local isActive = clonedModuleFrame.Visible
+            clonedModuleFrame.Visible = not isActive
+            moduleArgs.Callback(not isActive)
+        end)
+    else
+        warn("TextButton not found in Module.")
+    end
+
+    return clonedModule, clonedModuleFrame
 end
 
 return VapeLib
