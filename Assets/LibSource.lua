@@ -168,12 +168,13 @@ function VapeLib:CreateTab(window, args)
             warn("TextLabel not found in Module.")
         end
 
-        -- Ensure the List folder exists in the tab
-        local tabList = tab:FindFirstChild("List")
+        -- Ensure the List folder exists in the tab's window frame
+        local contentFrame = tab.Parent:FindFirstChild("ContentFrames"):FindFirstChild(tab.Name)
+        local tabList = contentFrame and contentFrame:FindFirstChild("List")
         if not tabList then
             tabList = Instance.new("Folder")
             tabList.Name = "List"
-            tabList.Parent = tab:FindFirstChild("Window")
+            tabList.Parent = contentFrame
         end
 
         clonedModule.Parent = tabList
@@ -181,7 +182,7 @@ function VapeLib:CreateTab(window, args)
         -- Clone and setup corresponding ModuleFrame
         local clonedModuleFrame = moduleFrameTemplate:Clone()
         clonedModuleFrame.Name = moduleIdentifier
-        clonedModuleFrame.Parent = tabList -- Corrected to parent to the tab's List
+        clonedModuleFrame.Parent = tabList
         clonedModuleFrame.Visible = false -- Hide the module frame initially
 
         -- Store the module and its corresponding frame in the tab's modules
