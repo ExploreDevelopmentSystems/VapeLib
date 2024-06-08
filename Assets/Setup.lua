@@ -54,6 +54,7 @@ local Data = Instance.new("Folder")
 local Module_3 = Instance.new("Folder")
 local Window_3 = Instance.new("Folder")
 local Element_2 = Instance.new("Folder")
+local Wait = Instance.new("Folder")
 local Startup = Instance.new("Folder")
 local Load = Instance.new("Frame")
 local UICorner_7 = Instance.new("UICorner")
@@ -359,7 +360,7 @@ Toggle.Parent = Element
 Toggle.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 Toggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Toggle.BorderSizePixel = 0
-Toggle.Position = UDim2.new(0.915135443, 0, 0.158817962, 0)
+Toggle.Position = UDim2.new(0.908244133, 0, 0.159999996, 0)
 Toggle.Size = UDim2.new(0, 15, 0, 7)
 Toggle.AutoButtonColor = false
 Toggle.Font = Enum.Font.SourceSans
@@ -380,12 +381,12 @@ Frame.Size = UDim2.new(0, 8, 0, 7)
 UICorner_6.CornerRadius = UDim.new(0, 4)
 UICorner_6.Parent = Frame
 
-TextLabel_7.Parent = Frame
+TextLabel_7.Parent = Toggle
 TextLabel_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 TextLabel_7.BackgroundTransparency = 1.000
 TextLabel_7.BorderColor3 = Color3.fromRGB(0, 0, 0)
 TextLabel_7.BorderSizePixel = 0
-TextLabel_7.Position = UDim2.new(-20.0941925, 0, -1.36063492, 0)
+TextLabel_7.Position = UDim2.new(-10.3608646, 0, -1.36063492, 0)
 TextLabel_7.Size = UDim2.new(0, 142, 0, 25)
 TextLabel_7.Font = Enum.Font.SourceSansSemibold
 TextLabel_7.Text = "Behind check"
@@ -466,6 +467,9 @@ Window_3.Parent = Data
 Element_2.Name = "Element"
 Element_2.Parent = Data
 
+Wait.Name = "Wait"
+Wait.Parent = Data
+
 Startup.Name = "Startup"
 Startup.Parent = Asset
 
@@ -540,11 +544,11 @@ Status.TextXAlignment = Enum.TextXAlignment.Right
 
 -- Scripts:
 
-local function CWVLEYN_fake_script() -- Asset.LocalScript 
+local function DCZZQX_fake_script() -- Asset.LocalScript 
 	local script = Instance.new('LocalScript', Asset)
 
 	local scriptParent = script.Parent
 	scriptParent.Parent = game:GetService("ReplicatedStorage")
 	
 end
-coroutine.wrap(CWVLEYN_fake_script)()
+coroutine.wrap(DCZZQX_fake_script)()
