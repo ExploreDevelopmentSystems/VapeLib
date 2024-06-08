@@ -210,6 +210,59 @@ function VapeLib:CreateModule(tab, moduleArgs)
     return clonedModule, clonedModuleFrame
 end
 
+-- CreateToggle Function
+function VapeLib:CreateToggle(configFrame, toggleArgs)
+    assert(configFrame, "Config frame is required")
+    assert(toggleArgs.Name, "Name is required")
+    assert(toggleArgs.Callback, "Callback is required")
+
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+    -- Find the Toggle template
+    local assetFolder = findChildOrError(ReplicatedStorage, "Asset", "ReplicatedStorage")
+    local elementFolder = findChildOrError(assetFolder, "Element", "ReplicatedStorage.Asset")
+    local toggleTemplate = findChildOrError(elementFolder, "Toggle", "ReplicatedStorage.Asset.Element")
+
+    -- Clone the Toggle template and set its properties
+    local clonedToggle = toggleTemplate:Clone()
+    clonedToggle.Name = toggleArgs.Name
+
+    -- Set the TextLabel
+    local textLabel = clonedToggle:FindFirstChild("TextLabel")
+    if textLabel then
+        textLabel.Text = toggleArgs.Name
+    else
+        warn("TextLabel not found in Toggle.")
+    end
+
+    -- Define initial toggle state
+    local toggleState = false
+    local frame = clonedToggle:FindFirstChild("Frame")
+
+    -- Function to update the UI based on the toggle state
+    local function updateToggleUI()
+        if toggleState then
+            frame.Size = UDim2.new(0.467, 0, 1, 0)
+        else
+            frame.Size = UDim2.new(0, 0, 1, 0)
+        end
+        toggleArgs.Callback(toggleState)
+    end
+
+    -- Connect the toggle action
+    clonedToggle.MouseButton1Click:Connect(function()
+        toggleState = not toggleState
+        updateToggleUI()
+        print("Toggle", toggleArgs.Name, "state:", toggleState)
+    end)
+
+    -- Set the parent to the existing config frame
+    clonedToggle.Parent = configFrame
+    updateToggleUI()
+
+    return clonedToggle
+end
+
 
 
 return VapeLib
