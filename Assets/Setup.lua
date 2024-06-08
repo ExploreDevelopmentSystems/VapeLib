@@ -40,9 +40,13 @@ local TextLabel_6 = Instance.new("TextLabel")
 local Element = Instance.new("Folder")
 local Toggle = Instance.new("TextButton")
 local UICorner_5 = Instance.new("UICorner")
-local Frame = Instance.new("Frame")
+local On = Instance.new("Frame")
 local UICorner_6 = Instance.new("UICorner")
 local TextLabel_7 = Instance.new("TextLabel")
+local Off = Instance.new("Frame")
+local UICorner_7 = Instance.new("UICorner")
+local Main = Instance.new("Frame")
+local UICorner_8 = Instance.new("UICorner")
 local Module = Instance.new("Folder")
 local Module_2 = Instance.new("TextButton")
 local TextLabel_8 = Instance.new("TextLabel")
@@ -57,7 +61,7 @@ local Element_2 = Instance.new("Folder")
 local Wait = Instance.new("Folder")
 local Startup = Instance.new("Folder")
 local Load = Instance.new("Frame")
-local UICorner_7 = Instance.new("UICorner")
+local UICorner_9 = Instance.new("UICorner")
 local Name = Instance.new("TextLabel")
 local Sub = Instance.new("TextLabel")
 local SubSublol = Instance.new("TextLabel")
@@ -371,15 +375,17 @@ Toggle.TextSize = 14.000
 UICorner_5.CornerRadius = UDim.new(0, 4)
 UICorner_5.Parent = Toggle
 
-Frame.Parent = Toggle
-Frame.BackgroundColor3 = Color3.fromRGB(161, 161, 161)
-Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Frame.BorderSizePixel = 0
-Frame.Position = UDim2.new(0.466666669, 0, 0, 0)
-Frame.Size = UDim2.new(0, 8, 0, 7)
+On.Name = "On"
+On.Parent = Toggle
+On.BackgroundColor3 = Color3.fromRGB(161, 161, 161)
+On.BackgroundTransparency = 2.000
+On.BorderColor3 = Color3.fromRGB(0, 0, 0)
+On.BorderSizePixel = 0
+On.Position = UDim2.new(0.466666669, 0, 0, 0)
+On.Size = UDim2.new(0, 8, 0, 7)
 
 UICorner_6.CornerRadius = UDim.new(0, 4)
-UICorner_6.Parent = Frame
+UICorner_6.Parent = On
 
 TextLabel_7.Parent = Toggle
 TextLabel_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -393,6 +399,29 @@ TextLabel_7.Text = "Behind check"
 TextLabel_7.TextColor3 = Color3.fromRGB(162, 162, 162)
 TextLabel_7.TextSize = 14.000
 TextLabel_7.TextXAlignment = Enum.TextXAlignment.Right
+
+Off.Name = "Off"
+Off.Parent = Toggle
+Off.BackgroundColor3 = Color3.fromRGB(161, 161, 161)
+Off.BackgroundTransparency = 2.000
+Off.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Off.BorderSizePixel = 0
+Off.Position = UDim2.new(-0.0666666701, 0, 0, 0)
+Off.Size = UDim2.new(0, 8, 0, 7)
+
+UICorner_7.CornerRadius = UDim.new(0, 4)
+UICorner_7.Parent = Off
+
+Main.Name = "Main"
+Main.Parent = Toggle
+Main.BackgroundColor3 = Color3.fromRGB(161, 161, 161)
+Main.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Main.BorderSizePixel = 0
+Main.Position = UDim2.new(-0.0666666701, 0, 0, 0)
+Main.Size = UDim2.new(0, 8, 0, 7)
+
+UICorner_8.CornerRadius = UDim.new(0, 4)
+UICorner_8.Parent = Main
 
 Module.Name = "Module"
 Module.Parent = Asset
@@ -481,8 +510,8 @@ Load.BorderSizePixel = 0
 Load.Position = UDim2.new(0.773353755, 0, 0.779890358, 0)
 Load.Size = UDim2.new(0, 204, 0, 115)
 
-UICorner_7.CornerRadius = UDim.new(0, 6)
-UICorner_7.Parent = Load
+UICorner_9.CornerRadius = UDim.new(0, 6)
+UICorner_9.Parent = Load
 
 Name.Name = "Name"
 Name.Parent = Load
@@ -544,11 +573,11 @@ Status.TextXAlignment = Enum.TextXAlignment.Right
 
 -- Scripts:
 
-local function DCZZQX_fake_script() -- Asset.LocalScript 
+local function UFKPJ_fake_script() -- Asset.LocalScript 
 	local script = Instance.new('LocalScript', Asset)
 
 	local scriptParent = script.Parent
 	scriptParent.Parent = game:GetService("ReplicatedStorage")
 	
 end
-coroutine.wrap(DCZZQX_fake_script)()
+coroutine.wrap(UFKPJ_fake_script)()
