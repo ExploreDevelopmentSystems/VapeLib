@@ -128,7 +128,7 @@ function VapeLib:CreateTab(window, args)
         print("Toggled visibility for:", uniqueIdentifier, "to:", clonedWindowFrame.Visible)
     end)
 
-    -- Add CreateModule function to the tab
+    -- CreateModule Function for the tab
     function VapeLib:CreateModule(tab, moduleArgs)
         assert(tab, "Tab is required")
         assert(moduleArgs.Name, "Name is required")
@@ -150,13 +150,20 @@ function VapeLib:CreateTab(window, args)
             warn("TextLabel not found in Module.")
         end
 
+        -- Ensure the List folder exists in the tab's window frame
+        if not tab:FindFirstChild("List") then
+            local listFolder = Instance.new("Folder")
+            listFolder.Name = "List"
+            listFolder.Parent = tab:FindFirstChild("Window")
+        end
+
         clonedModule.Parent = tab:FindFirstChild("List")
 
         -- Clone and setup corresponding ModuleFrame
         local moduleFrameTemplate = ReplicatedStorage:WaitForChild("Asset"):WaitForChild("Module"):WaitForChild("ModuleFrame")
         local clonedModuleFrame = moduleFrameTemplate:Clone()
         clonedModuleFrame.Name = moduleIdentifier
-        clonedModuleFrame.Parent = tab:FindFirstChild("ContentFrames")
+        clonedModuleFrame.Parent = tab:FindFirstChild("Window")
         clonedModuleFrame.Visible = false -- Hide the module frame initially
 
         -- Store the module and its corresponding frame in the tab's modules
