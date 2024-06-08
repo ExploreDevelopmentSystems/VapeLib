@@ -24,9 +24,9 @@ function VapeLib:CreateWindow(args)
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
     local Players = game:GetService("Players")
     local player = Players.LocalPlayer
-    local playerGui = player:WaitForChild("PlayerGui")
+    local playerGui = player:FindFirstChild("PlayerGui")
     
-    local libContainer = playerGui:FindFirstChild("Lib")
+    local libContainer = playerGui and playerGui:FindFirstChild("Lib")
     if not libContainer then
         libContainer = Instance.new("ScreenGui")
         libContainer.Name = "Lib"
@@ -35,7 +35,10 @@ function VapeLib:CreateWindow(args)
         libContainer.Parent = playerGui
     end
 
-    local windowTemplate = ReplicatedStorage:WaitForChild("Asset"):WaitForChild("Window"):WaitForChild("Home")
+    local windowTemplate = ReplicatedStorage:FindFirstChild("Asset") and ReplicatedStorage.Asset:FindFirstChild("Window") and ReplicatedStorage.Asset.Window:FindFirstChild("Home")
+    if not windowTemplate then
+        error("Window template 'Home' not found in ReplicatedStorage.Asset.Window")
+    end
     local clonedWindow = windowTemplate:Clone()
 
     local titleLabel = clonedWindow:FindFirstChild("WindowName") or clonedWindow:FindFirstChild("TextLabel")
@@ -78,7 +81,10 @@ function VapeLib:CreateTab(window, args)
     end
 
     -- Clone and setup TabButton
-    local tabButtonTemplate = ReplicatedStorage:WaitForChild("Asset"):WaitForChild("Window"):WaitForChild("TabButton")
+    local tabButtonTemplate = ReplicatedStorage:FindFirstChild("Asset") and ReplicatedStorage.Asset:FindFirstChild("Window") and ReplicatedStorage.Asset.Window:FindFirstChild("TabButton")
+    if not tabButtonTemplate then
+        error("TabButton template not found in ReplicatedStorage.Asset.Window")
+    end
     local clonedTabButton = tabButtonTemplate:Clone()
 
     local textLabel = clonedTabButton:FindFirstChild("TextLabel")
@@ -102,7 +108,10 @@ function VapeLib:CreateTab(window, args)
     print("Added TabButton with Name:", uniqueIdentifier)
 
     -- Clone and setup corresponding window frame
-    local windowFrameTemplate = ReplicatedStorage:WaitForChild("Asset"):WaitForChild("Window"):WaitForChild("Window")
+    local windowFrameTemplate = ReplicatedStorage:FindFirstChild("Asset") and ReplicatedStorage.Asset:FindFirstChild("Window") and ReplicatedStorage.Asset.Window:FindFirstChild("Window")
+    if not windowFrameTemplate then
+        error("Window template not found in ReplicatedStorage.Asset.Window")
+    end
     local clonedWindowFrame = windowFrameTemplate:Clone()
 
     local windowNameLabel = clonedWindowFrame:FindFirstChild("WindowName") or clonedWindowFrame:FindFirstChild("TextLabel")
@@ -128,7 +137,7 @@ function VapeLib:CreateTab(window, args)
         print("Toggled visibility for:", uniqueIdentifier, "to:", clonedWindowFrame.Visible)
     end)
 
-    -- CreateModule Function for the tab
+    -- Add CreateModule function to the tab
     function VapeLib:CreateModule(tab, moduleArgs)
         assert(tab, "Tab is required")
         assert(moduleArgs.Name, "Name is required")
@@ -138,7 +147,10 @@ function VapeLib:CreateTab(window, args)
         local moduleIdentifier = generateRandomString(6)
         
         -- Clone and setup Module
-        local moduleTemplate = ReplicatedStorage:WaitForChild("Asset"):WaitForChild("Module"):WaitForChild("Module")
+        local moduleTemplate = ReplicatedStorage:FindFirstChild("Asset") and ReplicatedStorage.Asset:FindFirstChild("Module") and ReplicatedStorage.Asset.Module:FindFirstChild("Module")
+        if not moduleTemplate then
+            error("Module template not found in ReplicatedStorage.Asset.Module")
+        end
         local clonedModule = moduleTemplate:Clone()
         clonedModule.Name = moduleIdentifier
 
@@ -150,17 +162,20 @@ function VapeLib:CreateTab(window, args)
             warn("TextLabel not found in Module.")
         end
 
-        -- Ensure the List folder exists in the tab's window frame
-        if not tab:FindFirstChild("List") then
-            local listFolder = Instance.new("Folder")
-            listFolder.Name = "List"
-            listFolder.Parent = tab:FindFirstChild("Window")
+        local list = tab:FindFirstChild("List")
+        if not list then
+            list = Instance.new("Folder")
+            list.Name = "List"
+            list.Parent = tab:FindFirstChild("Window")
         end
 
-        clonedModule.Parent = tab:FindFirstChild("List")
+        clonedModule.Parent = list
 
         -- Clone and setup corresponding ModuleFrame
-        local moduleFrameTemplate = ReplicatedStorage:WaitForChild("Asset"):WaitForChild("Module"):WaitForChild("ModuleFrame")
+        local moduleFrameTemplate = ReplicatedStorage:FindFirstChild("Asset") and ReplicatedStorage.Asset:FindFirstChild("Module") and ReplicatedStorage.Asset.Module:FindFirstChild("ModuleFrame")
+        if not moduleFrameTemplate then
+            error("ModuleFrame template not found in ReplicatedStorage.Asset.Module")
+        end
         local clonedModuleFrame = moduleFrameTemplate:Clone()
         clonedModuleFrame.Name = moduleIdentifier
         clonedModuleFrame.Parent = tab:FindFirstChild("Window")
