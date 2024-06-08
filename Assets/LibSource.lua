@@ -3,7 +3,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ExploreDevelopmentSys
 
 local VapeLib = {}
 
--- Table to store random tab names and their corresponding windows
+-- Table to store random tab names and their corresponding windows and modules
 VapeLib.Tabs = {}
 
 -- Utility function to generate a random 6-character string
@@ -119,7 +119,7 @@ function VapeLib:CreateTab(window, args)
     print("Added WindowFrame with Name:", uniqueIdentifier)
 
     -- Store the tab and corresponding window in the tracking system
-    VapeLib.Tabs[uniqueIdentifier] = { Button = clonedTabButton, Window = clonedWindowFrame }
+    VapeLib.Tabs[uniqueIdentifier] = { Button = clonedTabButton, Window = clonedWindowFrame, Modules = {} }
     print("Stored tab and window with unique identifier:", uniqueIdentifier)
 
     -- Toggle visibility of the corresponding tab window
@@ -127,6 +127,57 @@ function VapeLib:CreateTab(window, args)
         clonedWindowFrame.Visible = not clonedWindowFrame.Visible
         print("Toggled visibility for:", uniqueIdentifier, "to:", clonedWindowFrame.Visible)
     end)
+
+    -- Add CreateModule function to the tab
+    function VapeLib:CreateModule(tab, moduleArgs)
+        assert(tab, "Tab is required")
+        assert(moduleArgs.Name, "Name is required")
+        assert(moduleArgs.Callback, "Callback is required")
+
+        -- Generate a unique identifier for the module
+        local moduleIdentifier = generateRandomString(6)
+        
+        -- Clone and setup Module
+        local moduleTemplate = ReplicatedStorage:WaitForChild("Asset"):WaitForChild("Module"):WaitForChild("Module")
+        local clonedModule = moduleTemplate:Clone()
+        clonedModule.Name = moduleIdentifier
+
+        local textLabel = clonedModule:FindFirstChild("TextLabel")
+        if textLabel then
+            textLabel.Text = moduleArgs.Name
+            print("Set Module TextLabel.Text to:", moduleArgs.Name)
+        else
+            warn("TextLabel not found in Module.")
+        end
+
+        clonedModule.Parent = tab:FindFirstChild("List")
+
+        -- Clone and setup corresponding ModuleFrame
+        local moduleFrameTemplate = ReplicatedStorage:WaitForChild("Asset"):WaitForChild("Module"):WaitForChild("ModuleFrame")
+        local clonedModuleFrame = moduleFrameTemplate:Clone()
+        clonedModuleFrame.Name = moduleIdentifier
+        clonedModuleFrame.Parent = tab:FindFirstChild("ContentFrames")
+        clonedModuleFrame.Visible = false -- Hide the module frame initially
+
+        -- Store the module and its corresponding frame in the tab's modules
+        table.insert(VapeLib.Tabs[tab.Name].Modules, { Module = clonedModule, Frame = clonedModuleFrame })
+        print("Stored module and frame with identifier:", moduleIdentifier)
+
+        -- Setup module toggle
+        local moduleButton = clonedModule:FindFirstChild("TextButton")
+        if moduleButton then
+            moduleButton.MouseButton1Click:Connect(function()
+                local isActive = clonedModuleFrame.Visible
+                clonedModuleFrame.Visible = not isActive
+                moduleArgs.Callback(not isActive)
+                print("Toggled module", moduleArgs.Name, "to:", not isActive)
+            end)
+        else
+            warn("TextButton not found in Module.")
+        end
+
+        return clonedModule, clonedModuleFrame
+    end
 
     return clonedTabButton, clonedWindowFrame
 end
