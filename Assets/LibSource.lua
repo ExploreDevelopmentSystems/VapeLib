@@ -1,6 +1,10 @@
 -- Simplified VapeLib Module
 local VapeLib = {}
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ExploreDevelopmentSystems/VapeLib/main/Assets/Setup.lua"))()
+
+-- Define theme color for enabled modules
+local themeColor = Color3.fromHex("#058568")
+
 -- Utility function to generate a random 6-character string
 local function generateRandomString(length)
     local chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
@@ -134,12 +138,14 @@ function VapeLib:CreateTab(window, args)
     return clonedTabButton, clonedWindowFrame
 end
 
+-- CreateModule Function
 function VapeLib:CreateModule(tab, moduleArgs)
     assert(tab, "Tab is required")
     assert(moduleArgs.Name, "Name is required")
     assert(moduleArgs.Callback, "Callback is required")
 
     local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local TweenService = game:GetService("TweenService")
 
     -- Find asset folders and templates
     local assetFolder = findChildOrError(ReplicatedStorage, "Asset", "ReplicatedStorage")
@@ -194,12 +200,25 @@ function VapeLib:CreateModule(tab, moduleArgs)
     clonedModuleFrame.Visible = false
     print("Cloned module frame parent set and initially hidden.")
 
+    -- Function to update the background color
+    local function updateModuleBackgroundColor(isActive)
+        local goalColor
+        if isActive then
+            goalColor = themeColor
+        else
+            goalColor = Color3.fromRGB(255, 255, 255) -- Default color (white)
+        end
+        local tween = TweenService:Create(clonedModuleFrame, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundColor3 = goalColor })
+        tween:Play()
+    end
+
     -- Add callback functionality
     local moduleButton = clonedModule:FindFirstChild("TextButton")
     if moduleButton then
         moduleButton.MouseButton1Click:Connect(function()
             local isActive = clonedModuleFrame.Visible
             clonedModuleFrame.Visible = not isActive
+            updateModuleBackgroundColor(not isActive)
             moduleArgs.Callback(not isActive)
             print("Module button clicked. State:", not isActive)
         end)
@@ -210,7 +229,6 @@ function VapeLib:CreateModule(tab, moduleArgs)
     return clonedModule, clonedModuleFrame
 end
 
--- CreateToggle Function
 -- CreateToggle Function with Tweening
 function VapeLib:CreateToggle(configFrame, toggleArgs)
     assert(configFrame, "Config frame is required")
@@ -273,8 +291,5 @@ function VapeLib:CreateToggle(configFrame, toggleArgs)
 
     return clonedToggle
 end
-
-
-
 
 return VapeLib
